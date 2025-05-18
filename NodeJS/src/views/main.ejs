@@ -1,0 +1,208 @@
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  .dashboard-card {
+    border-radius: 10px;
+    background-color: #333333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  .dashboard-card .card-body {
+    padding: 20px;
+  }
+  .card-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  .card-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #b6ff00;
+  }
+  .card-icon {
+    font-size: 40px;
+    color: #b6ff00;
+  }
+  .card-footer {
+    text-align: right;
+    font-size: 14px;
+    color: #b6ff00;
+  }
+  .navbar {
+    background-color: #000000;
+  }
+  .navbar-brand {
+    font-weight: bold;
+    color: #b6ff00;
+  }
+  .navbar-nav .nav-link {
+    color: #ffffff;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #ffd700;
+  }
+  .content {
+    margin-left: 270px;
+    padding: 20px;
+  }
+</style>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+  </div>
+</nav>
+
+<!-- Main content -->
+<div class="container mt-5">
+  <div class="row">
+    <!-- Total Products -->
+    <div class="col-md-4">
+      <div class="dashboard-card">
+        <div class="card-body">
+          <i class="fas fa-box-open card-icon"></i>
+          <h5 class="card-title">Tổng Sản Phẩm</h5>
+          <p class="card-text"><%= data.totalProducts %> Sản phẩm</p>
+        </div>
+        <div class="card-footer">
+          <a href="/list-product" class="text-decoration-none">Xem Chi Tiết</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="col-md-4">
+      <div class="dashboard-card">
+        <div class="card-body">
+          <i class="fas fa-cogs card-icon"></i>
+          <h5 class="card-title">Tổng Đơn Hàng</h5>
+          <p class="card-text"><%= data.totalOrders %> Đơn hàng</p>
+        </div>
+        <div class="card-footer">
+          <a href="/list-orders" class="text-decoration-none">Xem Chi Tiết</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Users -->
+    <div class="col-md-4">
+      <div class="dashboard-card">
+        <div class="card-body">
+          <i class="fas fa-users card-icon"></i>
+          <h5 class="card-title">Tổng Người Dùng</h5>
+          <p class="card-text"><%= data.totalUsers %> Người dùng</p>
+        </div>
+        <div class="card-footer">
+          <a href="/list-user" class="text-decoration-none">Xem Chi Tiết</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Thống Kê Đơn Hàng (Biểu đồ) -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <div class="card dashboard-card">
+        <div class="card-body">
+          <h5 class="card-title">Thống Kê Doanh Thu</h5>
+          <!-- Form chọn ngày, tháng, năm -->
+            <form action="/filter-orders" method="GET">
+              <div class="row">
+                  <div class="col-md-3">
+                      <label for="year" class="text-light">Chọn Năm:</label>
+                      <select id="year" name="year" class="form-control">
+                          <option value="">Chọn Năm</option>
+                          <% for (let year of data.years) { %>
+                              <option value="<%= year %>" <%= year === data.selectedYear ? 'selected' : '' %>><%= year %></option>
+                          <% } %>
+                      </select>
+                  </div>
+                  <div class="col-md-3">
+                      <label for="month" class="text-light">Chọn Tháng:</label>
+                      <select id="month" name="month" class="form-control">
+                          <option value="">Chọn Tháng</option>
+                          <% for (let month = 1; month <= 12; month++) { %>
+                              <option value="<%= month %>" <%= month == data.selectedMonth ? 'selected' : '' %>>Tháng <%= month %></option>
+                          <% } %>
+                      </select>
+                  </div>
+                  <div class="col-md-3">
+                      <label for="day" class="text-light">Chọn Ngày:</label>
+                      <input type="date" id="day" name="day" class="form-control" value="<%= data.selectedDay %>">
+                  </div>
+                  <div class="col-md-3 d-flex align-items-end">
+                      <button type="submit" class="btn btn-primary">Lọc</button>
+                  </div>
+              </div>
+            </form>
+            <!-- Biểu đồ thống kê doanh thu -->
+            <canvas id="orderChart" width="400" height="200"></canvas>
+            <script>
+                const months = <%- JSON.stringify(data.months) %>;
+                const revenueByMonth = <%- JSON.stringify(data.revenueByMonth) %>; // Dữ liệu doanh thu theo tháng
+
+                // Tạo biểu đồ area
+                const ctx = document.getElementById('orderChart').getContext('2d');
+                const orderChart = new Chart(ctx, {
+                    type: 'line', // Đổi từ 'bar' thành 'line' để tạo area chart
+                    data: {
+                        labels: months, // Các nhãn (tháng)
+                        datasets: [{
+                            label: 'Doanh thu', // Tiêu đề của biểu đồ
+                            data: revenueByMonth, // Dữ liệu doanh thu
+                            backgroundColor: 'rgba(182, 255, 0, 0.3)', // Màu nền với độ trong suốt cho hiệu ứng area
+                            borderColor: '#b6ff00', // Màu viền đường
+                            borderWidth: 2,
+                            fill: true // Bật fill để tạo hiệu ứng area
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true // Bắt đầu trục Y từ 0
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+      </div>
+    </div>
+  
+            <!-- Biểu đồ thống kê doanh thu
+            <canvas id="orderChart" width="400" height="200"></canvas>
+            <script>
+                const months = <%- JSON.stringify(data.months) %>;
+                const revenueByMonth = <%- JSON.stringify(data.revenueByMonth) %>; // Dữ liệu doanh thu theo tháng
+
+                // Tạo biểu đồ cột
+                const ctx = document.getElementById('orderChart').getContext('2d');
+                const orderChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: months,  // Các nhãn (tháng)
+                        datasets: [{
+                            label: 'Doanh thu',  // Tiêu đề của biểu đồ
+                            data: revenueByMonth,  // Dữ liệu doanh thu
+                            backgroundColor: '#b6ff00',
+                            borderColor: '#b6ff00',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true  // Bắt đầu trục Y từ 0
+                            }
+                        }
+                    }
+                });
+            </script> -->
+
+

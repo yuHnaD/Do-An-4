@@ -1,0 +1,164 @@
+<!-- addProduct.ejs -->
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Thêm Sản Phẩm</h2>
+    <form action="/add-product" method="POST" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="ten" class="form-label">Tên sản phẩm:</label>
+                <input type="text" id="ten" name="ten" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="gia" class="form-label">Giá sản phẩm:</label>
+                <input type="number" id="gia" name="gia" class="form-control" required min="0">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="tacgia" class="form-label">Tác giả:</label>
+            <input type="text" id="tacgia" name="tacgia" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="mota" class="form-label">Mô tả sản phẩm:</label>
+            <textarea id="mota" name="mota" class="form-control" rows="4" required></textarea>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="hinhanh" class="form-label">Hình ảnh chính:</label>
+                <input type="file" id="hinhanh" name="hinhanh" class="form-control" accept="image/*" required>
+            </div>
+            <div class="col-md-6">
+                <label for="new_hinhanhPhu" class="form-label">Hình ảnh phụ (tùy chọn, nhiều ảnh):</label>
+                <input type="file" id="new_hinhanhPhu" name="new_hinhanhPhu" class="form-control" accept="image/*" multiple>
+                <small class="text-muted">Bạn có thể chọn tối đa 5 ảnh phụ.</small>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="idnxb" class="form-label">Nhà xuất bản:</label>
+                <select id="idnxb" name="idnxb" class="form-control" required>
+                    <% for (let i = 0; i < data.nxb.length; i++) { %>
+                        <option value="<%= data.nxb[i].manhaxuatban %>"><%= data.nxb[i].tenNxb %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="idnhom" class="form-label">Thể loại:</label>
+                <select id="idnhom" name="idnhom" class="form-control" required>
+                    <% for (let i = 0; i < data.nhom.length; i++) { %>
+                        <option value="<%= data.nhom[i].matheloai %>"><%= data.nhom[i].tenLoai %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+
+<!-- <h2>Thêm Sản Phẩm</h2>
+<form action="/add-product" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="ten">Tên sản phẩm:</label>
+        <input type="text" id="ten" name="ten" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="gia">Giá sản phẩm:</label>
+        <input type="number" id="gia" name="gia" class="form-control" required min="0">
+    </div>
+    <div class="form-group">
+        <label for="tacgia">Tác giả:</label>
+        <input type="text" id="tacgia" name="tacgia" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="mota">Mô tả sản phẩm:</label>
+        <textarea id="mota" name="mota" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="hinhanh">Hình ảnh sản phẩm:</label>
+        <input type="file" id="hinhanh" name="hinhanh" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="idnxb">Nhà xuất bản:</label>
+        <select id="idnxb" name="idnxb" class="form-control" required>
+            <% for (let i = 0; i < data.nxb.length; i++) { %>
+                <option value="<%= data.nxb[i].manhaxuatban %>"><%= data.nxb[i].tenNxb %></option>
+            <% } %>
+        </select>
+    </div>    
+    <div class="form-group">
+        <label for="idnhom">Thể loại:</label>
+        <select id="idnhom" name="idnhom" class="form-control" required>
+            <% for (let i = 0; i < data.nhom.length; i++) { %>
+                <option value="<%= data.nhom[i].matheloai %>"><%= data.nhom[i].tenLoai %></option>
+            <% } %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+</form> -->
+<!-- <h2>Thêm Sản Phẩm</h2>
+<form action="/add-product" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="ten">Tên sản phẩm:</label>
+        <input type="text" id="ten" name="ten" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="gia">Giá sản phẩm:</label>
+        <input type="number" id="gia" name="gia" class="form-control" required min="0">
+    </div>
+    <div class="form-group">
+        <label for="tacgia">Tác giả:</label>
+        <input type="text" id="tacgia" name="tacgia" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="mota">Mô tả sản phẩm:</label>
+        <textarea id="mota" name="mota" class="form-control" required></textarea>
+    </div>
+    <div class="form-group">
+        <label for="hinhanh">Hình ảnh chính:</label>
+        <input type="file" id="hinhanh" name="hinhanh" class="form-control" accept="image/*" required>
+    </div>
+    <div class="form-group">
+        <label for="hinhanhPhu">Hình ảnh phụ (tùy chọn, nhiều ảnh):</label>
+        <input type="file" id="new_hinhanhPhu" name="new_hinhanhPhu" class="form-control" accept="image/*" multiple>
+        <small class="text-muted">Bạn có thể chọn tối đa 5 ảnh phụ.</small>
+    </div>
+    <div class="form-group">
+        <label for="idnxb">Nhà xuất bản:</label>
+        <select id="idnxb" name="idnxb" class="form-control" required>
+            <% for (let i = 0; i < data.nxb.length; i++) { %>
+                <option value="<%= data.nxb[i].manhaxuatban %>"><%= data.nxb[i].tenNxb %></option>
+            <% } %>
+        </select>
+    </div>    
+    <div class="form-group">
+        <label for="idnhom">Thể loại:</label>
+        <select id="idnhom" name="idnhom" class="form-control" required>
+            <% for (let i = 0; i < data.nhom.length; i++) { %>
+                <option value="<%= data.nhom[i].matheloai %>"><%= data.nhom[i].tenLoai %></option>
+            <% } %>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
+</form> -->

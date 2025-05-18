@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= data.title %></title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+        }
+
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .login-form {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-form .navbar-brand {
+            margin-bottom: 20px;
+        }
+
+        .login-form .logo-icon {
+            margin-right: 10px;
+        }
+
+        .login-form .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E3A8A;
+        }
+
+        .login-form .logo-text span {
+            color: #FBBF24;
+        }
+
+        .login-form label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+            text-align: left;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+        }
+
+        .login-form .password-wrapper {
+            position: relative;
+        }
+
+        .login-form .password-wrapper .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #007bff;
+        }
+
+        .login-form .remember-me {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .login-form .remember-me input {
+            margin-right: 5px;
+        }
+
+        .login-form .remember-me label {
+            margin: 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .login-form button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #003087;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .login-form button[type="submit"]:hover {
+            background-color: #002669;
+        }
+
+        .login-form .google-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            text-decoration: none;
+            margin-bottom: 15px;
+        }
+
+        .login-form .google-login img {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .login-form .google-login:hover {
+            background-color: #f8f8f8;
+        }
+
+        .login-form .links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .login-form .links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .login-form .links a:hover {
+            text-decoration: underline;
+        }
+
+        .login-form .back-link a {
+            color: #333;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .login-form .back-link a:hover {
+            color: #007bff;
+            text-decoration: underline;
+        }
+
+        .login-form .language-switcher {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .login-form .language-switcher select {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .login-form .language-switcher button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-form .language-switcher button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-image {
+            flex: 2;
+            background: url('https://png.pngtree.com/png-vector/20230808/ourlarge/pngtree-fiction-book-clipart-illustration-of-open-book-with-cartoon-illustration-vector-png-image_6870390.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                height: auto;
+                max-width: 100%;
+            }
+
+            .login-form {
+                padding: 20px;
+            }
+
+            .login-image {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <!-- Form đăng nhập -->
+        <div class="login-form">
+            <form action="/login" method="post" id="loginform">
+                <!-- Logo -->
+                <div class="navbar-brand fw-bold text-dark d-flex align-items-center">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 40px; height: 40px;">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" fill="#1E3A8A"/>
+                            <path d="M12 6l-3 6h6l-3-6z" fill="#FBBF24"/>
+                            <path d="M9 12h6v6H9v-6z" fill="#1E3A8A"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        Book<span>Haven</span>
+                    </div>
+                </div>
+
+                <!-- Username input -->
+                <label for="username">Tên tài khoản</label>
+                <input type="text" name="username" id="username" placeholder="" required>
+
+                <!-- Password input -->
+                <label for="password">Mật khẩu</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="password" placeholder="" required>
+                    <!-- <span class="toggle-password fa fa-eye" onclick="togglePassword()"></span> -->
+                </div>
+
+                <!-- Remember me checkbox -->
+                <!-- <div class="remember-me">
+                    <input type="checkbox" id="rememberme" name="rememberme" value="forever">
+                    <label for="rememberme">Tự động đăng nhập</label>
+                </div> -->
+
+                <!-- Submit button -->
+                <button type="submit">Đăng nhập</button>
+
+                <!-- Google login -->
+                <!-- <a href="#" class="google-login">
+                    <img src="https://www.google.com/favicon.ico" alt="Google">
+                    Continue with Google
+                </a> -->
+
+                <!-- Links -->
+                <!-- <div class="links">
+                    <a href="/register">Đăng ký</a>
+                    <a href="/forgot-password">Bạn quên mật khẩu?</a>
+                </div> -->
+
+                <!-- Back link -->
+                <!-- <div class="back-link">
+                    <a href="/">← Quay lại Nhóm 6</a>
+                </div> -->
+
+                <!-- Language switcher -->
+                <!-- <div class="language-switcher">
+                    <select name="wp_lang" id="language-switcher-locales">
+                        <option value="vi" selected>Tiếng Việt</option>
+                        <option value="en_US">English (United States)</option>
+                    </select>
+                    <button type="button">Thay đổi</button>
+                </div> -->
+            </form>
+        </div>
+
+        <!-- Hình ảnh minh họa -->
+        <div class="login-image"></div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById("password");
+            const toggleIcon = document.querySelector(".toggle-password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
+        // Auto-focus on username input
+        window.onload = function () {
+            document.getElementById("username").focus();
+        };
+    </script>
+</body>
+
+</html>

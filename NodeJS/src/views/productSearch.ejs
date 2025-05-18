@@ -1,0 +1,113 @@
+<h2>Danh Sách Sản Phẩm</h2>
+<div class="container" style="max-width: 100%; padding-left: 0;">
+    <form action="/search" method="get" class="mb-3 d-flex">
+        <!-- Bộ lọc danh mục -->
+        <select name="category" class="form-select" style="width: auto; max-width: 150px; max-height: 39px; margin-right: 10px;" onchange="this.form.submit()">
+            <option value="">Tất cả thể loại</option>
+            <% if (data.categories && data.categories.length > 0) { %>
+                <% data.categories.forEach(category => { %>
+                    <option value="<%= category.matheloai %>" <%= category.matheloai == data.selectedCategory ? 'selected' : '' %>>
+                        <%= category.tenLoai %>
+                    </option>
+                <% }); %>
+            <% } %>
+        </select>
+        <!-- Input tìm kiếm -->
+        <input type="text" name="query" style="width: auto; max-width: 200px; max-height: 39px; margin-right: 10px;" class="form-control" placeholder="Tìm kiếm sản phẩm" value="<%= data.query || '' %>">
+        <button class="btn btn-primary" type="submit" style="width: auto; max-width: 150px; max-height: 39px; margin-right: 10px;">Tìm kiếm</button>
+    </form>
+</div>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;">STT</th>
+            <th style="width: 200px;">Tên sản phẩm</th>    
+            <th style="width: 150px;">Hình ảnh</th>
+            <th style="width: 150px;">Tác giả</th>
+            <th style="width: 150px;">Giá</th>
+            <th style="width: 100px;">Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.products && data.products.length > 0) { %>
+            <% for (let i = 0; i < data.products.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= (data.currentPage - 1) * data.limit + i + 1 %></th>
+                    <td><%= data.products[i].tensach %></td>
+                    <td>
+                        <!-- Hiển thị hình ảnh sản phẩm -->
+                        <img src="/uploads/<%= data.products[i].hinhanh %>">
+                    </td>    
+                    <td><%= data.products[i].tacgia %></td>                
+                    <td><%= data.products[i].gia %></td>
+                    <!-- <td><%= data.products[i].mota %></td> -->
+                    <td>
+                        <!-- Xem chi tiết sản phẩm -->
+                        <a href="/detail-product/<%= data.products[i].masach %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </span>
+                        </a>
+
+                        <!-- Chỉnh sửa sản phẩm -->
+                        <a href="/edit-product/<%= data.products[i].masach %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+
+                        <!-- Xóa sản phẩm -->
+                        <form action="/delete-product" method="post" class="del" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                            <input type="hidden" value="<%= data.products[i].masach %>" name="masp">
+                            <label for="<%= data.products[i].masach %>">
+                                <span class="setting" style="color: black;">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                            <input type="submit" id="<%= data.products[i].masach %>" value="Xóa" style="display: none;">
+                        </form>                      
+                    </td>
+                </tr>
+            <% } %>           
+        <% } else { %>
+            <tr>
+                <td colspan="7" class="text-center">Không có sản phẩm nào!</td>
+            </tr>
+        <% } %>
+    </tbody>   
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <li class="page-item <%= i === data.currentPage ? 'active' : '' %>">
+                <a class="page-link" href="/search?page=<%= i %>&category=<%= data.selectedCategory %>&query=<%= data.query || '' %>">
+                    <%= i %>
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</nav>
+<style>
+    thead th {
+        border-bottom: 2px solid black !important; 
+        text-align: center;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+    }
+    .del {
+        display: inline; 
+    }
+    td img {
+        width: 50px; /* Đặt kích thước hình ảnh */
+        height: 50px;
+    }
+    .table  td {
+        vertical-align: middle;
+    }
+    .table tr {
+        text-align: center;
+    }
+    .table th {
+        vertical-align: middle;
+    }
+</style>

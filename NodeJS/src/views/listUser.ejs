@@ -1,0 +1,93 @@
+<h2>Danh Sách Người Dùng</h2>
+
+<!-- Form tìm kiếm và lọc theo vai trò -->
+<div class="container" style="max-width: 100%; padding-left: 0;">
+    <form action="/list-user" method="get" class="mb-3 d-flex">
+        <!-- Lọc theo vai trò (với sự kiện onchange để tự động gửi yêu cầu) -->
+        <select name="role" class="form-control" style="width: auto; max-width: 200px; margin-right: 10px;" onchange="this.form.submit()">
+            <option value="">Tất cả người dùng</option>
+            <option value="user" <%= data.role === 'user' ? 'selected' : '' %>>Role: User</option>
+            <option value="admin" <%= data.role === 'admin' ? 'selected' : '' %>>Role: Admin</option>
+        </select>
+
+        <!-- Tìm kiếm người dùng -->
+        <input type="text" name="query" style="width: auto; max-width: 200px; max-height: 39px; margin-right: 10px;" class="form-control" placeholder="Tìm kiếm người dùng" value="<%= data.query || '' %>">
+        
+        <!-- Nút tìm kiếm (có thể giữ lại nếu cần thiết) -->
+        <button class="btn btn-primary" type="submit" style="width: auto; max-width: 150px; max-height: 39px; margin-right: 10px;">Tìm kiếm</button>
+    </form>
+</div>
+
+<!-- Bảng người dùng -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;">STT</th>
+            <th style="width: 150px;">Tài khoản</th>
+            <th style="width: 200px;">Họ tên</th>
+            <th style="width: 200px;">Địa chỉ</th>
+            <th style="width: 100px;">Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.rows && data.rows.length > 0) { %>
+            <% for(let i = 0; i < data.rows.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= (data.currentPage - 1) * data.limit + i + 1 %></th>
+                    <td><%= data.rows[i].tentaikhoan %></td>
+                    <td><%= data.rows[i].tennguoidung %></td>
+                    <td><%= data.rows[i].diachi %></td>
+                    <td>
+                        <a href="/list-user/<%= data.rows[i].tentaikhoan %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <a href="/edit-user/<%= data.rows[i].tentaikhoan %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <form action="/delete-user" method="post" class="del" onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                            <input type="hidden" value="<%= data.rows[i].tentaikhoan %>" name="username">
+                            <label for="<%= data.rows[i].tentaikhoan %>">
+                                <span class="setting" style="color: black;">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                            <input type="submit" id="<%= data.rows[i].tentaikhoan %>" value="Xóa" style="display: none;">
+                        </form>
+                    </td>
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td colspan="5" class="text-center">Không có người dùng nào!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+    <% if (data.totalPages > 0) { %>
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <a href="/list-user?page=<%= i %>&query=<%= data.query || '' %>&role=<%= data.role || '' %>"
+               class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+                <%= i %>
+            </a>
+        <% } %>
+    <% } %>
+</div>
+
+<style>
+    thead th {
+        border-bottom: 2px solid black !important; 
+        text-align: left;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+    }
+    .del {
+        display: inline; 
+    }
+</style>

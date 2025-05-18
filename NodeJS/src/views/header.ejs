@@ -1,0 +1,304 @@
+<!-- Sidebar -->
+<div class="sidebar">
+<div class="logo">Admin</div>
+<ul class="nav flex-column">
+  <!-- Trang chủ -->
+  <li class="nav-item">
+    <a class="nav-link" href="/">
+      <span>🏠</span> Trang chủ
+    </a>
+  </li>
+
+  <!-- Quản lý người dùng (Accordion) -->
+  <li class="nav-item">
+    <a class="nav-link" id="toggleUserManagement" href="#userManagement" role="button">
+      <span>👥</span> Quản lý người dùng
+    </a>
+    <div class="collapse" id="userManagement">
+      <ul class="nav flex-column ms-3">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/list-user">
+            <span>👤</span> Danh sách người dùng
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/create-new-user">
+            <span>➕</span> Thêm người dùng
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Quản lý sản phẩm (Accordion) -->
+  <li class="nav-item">
+    <a class="nav-link" id="toggleProductManagement" href="#productManagement" role="button">
+      <span>📦</span> Quản lý sản phẩm
+    </a>
+    <div class="collapse" id="productManagement">
+      <ul class="nav flex-column ms-3">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/list-product">
+            <span>📚</span> Danh sách sản phẩm
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link text-light" href="/import-warehouse">
+            <span>📦</span> Nhập kho
+          </a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/add-product">
+            <span>➕</span> Thêm sản phẩm
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+    <!-- Quản lý khuyến mãi -->
+    <li class="nav-item">
+      <a class="nav-link" id="togglePromotionManagement" href="#promotionManagement" role="button">
+        <span>🎁</span> Quản lý khuyến mãi
+      </a>
+      <div class="collapse" id="promotionManagement">
+        <ul class="nav flex-column ms-3">
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/list-promotion">
+              <span>🎫</span> Danh sách phiếu khuyến mãi
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/apply-promotion">
+              <span>🔖</span> Áp dụng khuyến mãi
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/import-promotion">
+              <span>➕</span> Thêm khuyến mãi
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  
+  <!-- Quản lý nhập kho -->
+  <li class="nav-item">
+    <a class="nav-link" id="toggleWareHouseManagement" href="#warehouseManagement" role="button">
+      <span>🏗️</span> Quản lý nhập kho
+    </a>
+    <div class="collapse" id="warehouseManagement">
+      <ul class="nav flex-column ms-3">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/list-warehouse">
+            <span>📜</span> Danh sách phiếu nhập kho
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/import-warehouse">
+            <span>➕</span> Nhập kho
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+  <!-- Quản lý thể loại (Accordion) -->
+  <li class="nav-item">
+    <a class="nav-link" id="toggleCategoryManagement" href="#categoryManagement" role="button">
+      <span>🗄️</span> Quản lý thể loại
+    </a>
+    <div class="collapse" id="categoryManagement">
+      <ul class="nav flex-column ms-3">
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/list-category">
+            <span>🗃️</span> Danh sách thể loại
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="/add-category">
+            <span>➕</span> Thêm thể loại
+          </a>
+        </li>
+      </ul>
+    </div>
+  </li>
+
+    <!-- Quản lý nhà xuất bản -->
+    <li class="nav-item">
+      <a class="nav-link" id="togglePublishingManagement" href="#publishingManagement" role="button">
+        <span>🖋️</span> Quản lý nhà xuất bản
+      </a>
+      <div class="collapse" id="publishingManagement">
+        <ul class="nav flex-column ms-3">
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/list-publishing">
+              <span>🗂️</span> Danh sách nhà xuất bản
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/add-publishing">
+              <span>➕</span> Thêm nhà xuất bản
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+    <!-- Quản lý cửa hàng -->
+    <li class="nav-item">
+      <a class="nav-link" id="toggleStoreManagement" href="#storeManagement" role="button">
+        <span>🏘</span> Quản lý cửa hàng
+      </a>
+      <div class="collapse" id="storeManagement">
+        <ul class="nav flex-column ms-3">
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/list-stores">
+              <span>🏡</span> Danh sách cửa hàng
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-light" href="/add-store">
+              <span>➕</span> Thêm cửa hàng
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+
+  <!-- Danh sách đơn hàng -->
+  <li class="nav-item">
+    <a class="nav-link" href="/list-orders">
+      <span>📝</span> Danh sách đơn hàng
+    </a>
+  </li>
+</ul>
+
+<!-- Logout -->
+<a href="/logout" class="logout">
+  <span>🔒</span> Đăng xuất
+</a>
+</div>
+
+<!-- Content -->
+<!-- <div class="content">
+<h1>Nội dung trang</h1>
+<p>Phần nội dung chính của bạn nằm ở đây.</p>
+</div> -->
+<script>
+// JavaScript to toggle the collapse without closing the parent item
+document.getElementById('toggleUserManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('userManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+});
+
+document.getElementById('toggleProductManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('productManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+});
+
+document.getElementById('toggleCategoryManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('categoryManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+});
+
+
+document.getElementById('togglePublishingManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('publishingManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+})
+
+document.getElementById('toggleWareHouseManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('warehouseManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+});
+
+document.getElementById('togglePromotionManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('promotionManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+})
+
+document.getElementById('toggleStoreManagement').addEventListener('click', function (e) {
+  e.preventDefault();
+  const collapseElement = document.getElementById('storeManagement');
+  const bsCollapse = new bootstrap.Collapse(collapseElement, {
+    toggle: true
+  });
+})
+</script>
+<style>
+body {
+  background-color: #1a1a1a;
+  color: #fff;
+}
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #212121;
+  padding: 20px;
+  position: fixed;
+}
+.sidebar .logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #b6ff00;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.sidebar .nav-item {
+  margin: 10px 0;
+}
+.sidebar .nav-link {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #333333;
+  text-decoration: none;
+}
+.sidebar .nav-link:hover {
+  background-color: #444444;
+}
+.badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: #b6ff00;
+  color: #000;
+}
+.logout {
+  margin-top: 30px;
+  color: #888888;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+.logout:hover {
+  color: #fff;
+}
+.content {
+  margin-left: 270px;
+  padding: 20px;
+}
+</style>

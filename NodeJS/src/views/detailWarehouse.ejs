@@ -1,0 +1,52 @@
+<h3>Chi tiết phiếu nhập kho</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;">STT</th>
+            <th style="width: 100px;">Mã sách</th>
+            <th style="width: 150px;">Hình ảnh</th>
+            <th style="width: 200px;">Tên sách</th>
+            <th style="width: 100px;">Số lượng</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.warehouseDetails && data.warehouseDetails.length > 0) { %>
+            <% data.warehouseDetails.forEach(function(detail, index) { %> <!-- index sẽ cung cấp STT -->
+                <tr>
+                    <td><%= index + 1 %></td> <!-- Sổ thứ tự -->
+                    <td><%= detail.masach %></td>
+                    <td><img src="/uploads/<%= detail.hinhanh %>" alt="<%= detail.tensach %>" width="50"></td>
+                    <td><%= detail.tensach %></td>
+                    <td><%= detail.soluong %></td>
+                </tr>
+            <% }); %>
+        <% } else { %>
+            <tr>
+                <td colspan="5" class="text-center">Không có chi tiết sản phẩm nào trong phiếu nhập kho!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+<!-- Nút quay lại danh sách phiếu nhập kho -->
+<a href="/list-warehouse" class="btn btn-primary mb-3 float-end">Quay lại danh sách phiếu nhập kho</a>
+<style>
+    thead th {
+        border-bottom: 2px solid black !important; 
+        text-align: center;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+    }
+    td img {
+        width: 50px;
+        height: 50px;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr {
+        text-align: center;
+    }
+    .table th {
+        vertical-align: middle;
+    }
+</style>

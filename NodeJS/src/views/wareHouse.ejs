@@ -1,0 +1,247 @@
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Tạo phiếu nhập kho</h2>
+    <form action="/import-warehouse" method="POST">
+        <div class="mb-3">
+            <label for="ngaynhapkho" class="form-label">Ngày nhập kho:</label>
+            <input type="datetime-local" id="ngaynhapkho" name="ngaynhapkho" class="form-control w-auto" required>
+        </div>
+    
+        <div class="mb-3">
+            <label for="ghichu" class="form-label">Ghi chú:</label>
+            <textarea id="ghichu" name="ghichu" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="searchBook" class="form-label">Tìm kiếm sách:</label>
+            <div class="input-group">
+                <input type="text" id="searchBook" class="form-control" placeholder="Nhập tên sách hoặc mã sách">
+            </div>
+        </div>
+    
+        <!-- Kết quả tìm kiếm -->
+        <div id="searchResults" class="mb-3" style="display: none;">
+            <!-- Các sản phẩm gợi ý sẽ hiển thị ở đây -->
+        </div>
+    
+        <!-- Chi tiết nhập kho -->
+        <h5 class="mt-4">Sản phẩm nhập kho</h5>
+        <div id="emptyMessage" class="text-muted mb-3">Vui lòng thêm sản phẩm cần nhập kho.</div>
+        <div id="productDetails" class="row"></div>
+        
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary mt-5 float-end">Lưu nhập kho</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Lấy ngày hiện tại và định dạng lại thành dạng 'yyyy-mm-ddThh:mm'
+    const today = new Date();
+    const todayString = today.toISOString().slice(0, 16);  // Định dạng cho datetime-local
+
+    // Cập nhật giá trị min của input 'ngaynhapkho' để chỉ có thể chọn ngày hôm nay trở đi
+    document.getElementById('ngaynhapkho').setAttribute('min', todayString);
+
+    // Lắng nghe sự kiện khi người dùng thay đổi ngày nhập kho
+    document.getElementById('ngaynhapkho').addEventListener('change', function() {
+        const selectedDate = new Date(this.value);  // Ngày từ input
+        const today = new Date();
+
+        // Đặt giờ, phút, giây của 'today' là 00:00 để so sánh chỉ theo ngày
+        today.setHours(0, 0, 0, 0);
+
+        // Kiểm tra xem ngày nhập kho có nhỏ hơn ngày hiện tại hay không
+        if (selectedDate < today) {
+            alert('Ngày nhập kho không thể nhỏ hơn ngày hiện tại.');
+            this.value = ''; // Xóa giá trị nếu không hợp lệ
+        }
+    });
+
+
+    // Lắng nghe sự kiện khi người dùng nhập từ khóa vào ô tìm kiếm
+    document.getElementById('searchBook').addEventListener('input', async () => {
+        const query = document.getElementById('searchBook').value;
+        
+        // Nếu không có từ khóa, ẩn kết quả tìm kiếm
+        if (!query) {
+            document.getElementById('searchResults').style.display = 'none';
+            return;
+        }
+
+        const response = await fetch(`/search-books?query=${query}`);
+        const books = await response.json();
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; // Xóa kết quả cũ khi tìm kiếm mới
+
+        // Hiển thị kết quả nếu có sách
+        if (books.length > 0) {
+            searchResults.style.display = 'block'; // Hiển thị danh sách kết quả
+            books.forEach(book => {
+                const div = document.createElement('div');
+                div.className = 'searchResult';
+                div.innerHTML = `
+                    <div class="searchResultCard">
+                        <img src="/uploads/${book.hinhanh}" alt="${book.tensach}" class="productImage">
+                        <div class="searchResultInfo">
+                            <span class="bookName">${book.tensach} (Mã sách: ${book.masach})</span>
+                            <button type="button" class="btn btn-primary" onclick="addBook(${book.masach}, '${book.tensach}', '${book.hinhanh}')">Thêm</button>
+                        </div>
+                    </div>
+                `;
+                searchResults.appendChild(div);
+            });
+        } else {
+            searchResults.style.display = 'none'; // Ẩn nếu không có kết quả
+        }
+    });
+
+    function addBook(masach, tensach, hinhanh) {
+        const productDetails = document.getElementById('productDetails');
+        const div = document.createElement('div');
+        div.className = 'productRow col-12 col-md-6 col-lg-4';
+        div.id = `product-${masach}`;
+        div.innerHTML = `
+            <input type="hidden" name="masach[]" value="${masach}">
+            <div class="d-flex align-items-center">
+                <img src="/uploads/${hinhanh}" alt="${tensach}" class="productImage">
+                <span class="ms-3">${tensach}</span>                               
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <span class="me-2">Số lượng:</span>
+                <input type="number" name="soluong[]" class="form-control me-2" required min="1">
+                <button type="button" class="btn btn-danger" onclick="removeBook(${masach})">Xóa</button>
+            </div>
+        `;
+        productDetails.appendChild(div);
+
+        // Ẩn thông báo "Vui lòng thêm sản phẩm cần nhập" khi có sản phẩm
+        document.getElementById('emptyMessage').style.display = 'none';
+
+        // Xóa gợi ý tìm kiếm và làm trống thanh tìm kiếm
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; 
+        searchResults.style.display = 'none'; 
+        document.getElementById('searchBook').value = '';
+    }
+
+    // Hàm xóa sản phẩm khỏi danh sách nhập kho
+    function removeBook(masach) {
+        if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
+            const product = document.getElementById(`product-${masach}`);
+            if (product) {
+                product.remove(); // Xóa phần tử khỏi DOM
+
+                // Hiển thị thông báo nếu danh sách sản phẩm rỗng
+                const productDetails = document.getElementById('productDetails');
+                if (productDetails.children.length === 0) {
+                    document.getElementById('emptyMessage').style.display = 'block';
+                }
+            }
+        }
+    }
+</script>
+<style>
+    /* Kết quả tìm kiếm */
+#searchResults {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+/* Card sản phẩm gợi ý */
+.searchResultCard {
+    display: flex;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hình ảnh sản phẩm */
+.searchResultCard img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+/* Thông tin sản phẩm */
+.searchResultInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    color: black;
+}
+
+/* Tên và mã sản phẩm */
+.bookName {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Nút thêm */
+.searchResultInfo button {
+    padding: 5px 10px;
+    max-width: 100px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Chi tiết nhập kho */
+.productRow {
+    display: flex;
+    justify-content: space-between; /* Căn đều khoảng cách giữa các phần tử */
+    align-items: center;
+    margin-bottom: 20px;
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    color: black;
+}
+
+.productRow img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.productRow span {
+    flex-grow: 1; /* Đẩy nhãn (tên sách) ra bên trái */
+    margin-right: 15px;
+}
+
+.productRow input[type="number"] {
+    width: 80px; /* Chiều rộng của ô nhập số lượng */
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: right; /* Căn chữ trong ô nhập sang phải */
+    margin-left: auto; /* Đẩy ô nhập số lượng sát về bên phải */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#emptyMessage {
+    font-size: 14px;
+    margin-top: 10px;
+    font-style: italic;
+}
+</style>

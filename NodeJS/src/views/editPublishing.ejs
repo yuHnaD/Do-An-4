@@ -1,0 +1,36 @@
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Sửa nhà xuất bản</h2>
+    <% if (data.message) { %>
+        <div class="alert alert-danger" role="alert">
+            <%= data.message %>
+        </div>
+    <% } %>
+    <form action="/edit-publishing/<%= data.publishing.manhaxuatban %>" method="POST">
+        <input type="hidden" name="id" value="<%= data.publishing.manhaxuatban %>">  <!-- Giữ ID nhóm -->
+        <div class="form-group mb-3">
+            <label for="publishingName" class="form-label">Tên nhà xuất bản</label>
+            <input type="text" class="form-control" id="publishingName" name="ten" value="<%= data.publishing.tennhaxuatban %>" required>
+        </div>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+            <a href="/list-publishing" class="btn btn-secondary">Quay lại danh sách nhà xuất bản</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>

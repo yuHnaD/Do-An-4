@@ -1,0 +1,68 @@
+<!-- updateUser.ejs -->
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Cập nhật người dùng: <%= data.rows.tennguoidung %></h2>
+    <form action="/update-user/<%= data.rows.tentaikhoan %>" method="POST">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="username" class="form-label">Tài khoản</label>
+                <input type="text" id="username" name="username" class="form-control" value="<%= data.rows.tentaikhoan || '' %>" readonly>
+            </div>
+            <div class="col-md-6">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" id="password" name="password" class="form-control" value="<%= data.rows.matkhau || '' %>" readonly>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="fullname" class="form-label">Họ tên</label>
+                <input type="text" id="fullname" name="fullname" class="form-control" value="<%= data.rows.tennguoidung || '' %>" required>
+            </div>
+            <div class="col-md-6">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" id="address" name="address" class="form-control" value="<%= data.rows.diachi || '' %>" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="sex" class="form-label">Giới tính</label>
+                <select id="sex" name="sex" class="form-control" required>
+                    <option value="Nam" <%= data.rows.gioitinh === 'Nam' ? 'selected' : '' %>>Nam</option>
+                    <option value="Nữ" <%= data.rows.gioitinh === 'Nữ' ? 'selected' : '' %>>Nữ</option>
+                    <option value="Khác" <%= data.rows.gioitinh === 'Khác' ? 'selected' : '' %>>Khác</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="<%= data.rows.email || '' %>" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="sodienthoai" class="form-label">Số điện thoại</label>
+            <input type="tel" id="sodienthoai" name="sodienthoai" class="form-control" value="<%= data.rows.sodienthoai || '' %>" required>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>

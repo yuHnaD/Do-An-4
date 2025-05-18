@@ -1,0 +1,27 @@
+<div class="container mt-5">
+    <h2>Chỉnh sửa cửa hàng</h2>
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <form method="POST" action="/edit-store/<%= data.store.macuahang %>" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="tencuahang" class="form-label">Tên cửa hàng</label>
+            <input type="text" class="form-control" id="tencuahang" name="tencuahang" value="<%= data.store.tencuahang %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="diachi" class="form-label">Địa chỉ</label>
+            <input type="text" class="form-control" id="diachi" name="diachi" value="<%= data.store.diachi %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="hinhanh" class="form-label">Hình ảnh cửa hàng</label>
+            <% if (data.store.hinhanh) { %>
+                <div>
+                    <img src="/uploads/<%= data.store.hinhanh %>" alt="<%= data.store.tencuahang %>" style="max-width: 150px; max-height: 150px; border-radius: 8px; margin-bottom: 10px;">
+                </div>
+            <% } %>
+            <input type="file" class="form-control" id="hinhanh" name="hinhanh" accept="image/*">
+            <input type="hidden" name="current_hinhanh" value="<%= data.store.hinhanh %>">
+        </div>
+        <button type="submit" class="btn btn-primary">Cập nhật cửa hàng</button>
+        <a href="/list-stores" class="btn btn-secondary">Hủy</a>
+    </form>

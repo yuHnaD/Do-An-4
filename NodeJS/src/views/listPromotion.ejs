@@ -1,0 +1,88 @@
+<h1><%= data.title %></h1>
+
+<!-- Form tìm kiếm -->
+<form method="GET" action="/list-promotion" class="mb-3">
+  <div class="form-group row">
+    <div class="col-md-4">
+      <input 
+        type="text" 
+        class="form-control" 
+        name="search" 
+        placeholder="Tìm kiếm khuyến mãi..." 
+        value="<%= data.search || '' %>"
+      />
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+  </div>
+</form>
+
+<!-- Table danh sách khuyến mãi -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width: 50px;">STT</th>
+      <th style="width: 200px;">Tên khuyến mãi</th>
+      <th style="width: 150px;">Phần trăm giảm giá</th>
+      <th style="width: 200px;">Ngày bắt đầu</th>
+      <th style="width: 200px;">Ngày kết thúc</th>
+      <th style="width: 100px;">Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (data.promotions.length > 0) { %>
+      <% data.promotions.forEach((promotion, index) => { %>
+        <tr>
+          <th scope="row"><%= (data.currentPage - 1) * data.limit + index + 1 %></th>
+          <td><%= promotion.tenkhuyenmai %></td>
+          <td><%= promotion.phantramgiamgia %>%</td>
+          <td><%= new Date(promotion.ngaybatdau).toLocaleDateString('vi-VN') %></td>
+          <td><%= new Date(promotion.ngayketthuc).toLocaleDateString('vi-VN') %></td>
+          <td>
+            <a href="/edit-promotion/<%= promotion.makhuyenmai %>" class="btn btn-sm btn-warning">Sửa</a>
+            <a href="/delete-promotion/<%= promotion.makhuyenmai %>" 
+               class="btn btn-sm btn-danger" 
+               onclick="return confirm('Bạn có chắc chắn muốn xóa khuyến mãi này?');">
+              Xóa
+            </a>
+          </td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr>
+        <td colspan="6" class="text-center">Không tìm thấy khuyến mãi nào!</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+  <% for (let i = 1; i <= data.totalPages; i++) { %>
+    <a href="/promotions?page=<%= i %>&search=<%= data.search %>" 
+       class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+      <%= i %>
+    </a>
+  <% } %>
+</div>
+
+<!-- CSS styling -->
+<style>
+  thead th {
+      border-bottom: 2px solid black !important; 
+      text-align: center;
+      padding: 10px; 
+      background-color: #f8f9fa; 
+  }
+  td, th {
+      vertical-align: middle;
+      text-align: center;
+  }
+  .table td {
+      padding: 15px;
+  }
+  .pagination .btn {
+      margin: 0 5px;
+  }
+</style>

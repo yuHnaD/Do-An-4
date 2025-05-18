@@ -1,0 +1,86 @@
+<h2>Danh Sách Thể Loại</h2>
+
+<!-- Form Tìm kiếm -->
+<form action="/list-category" method="get" class="mb-3 d-flex justify-content-start">
+    <input 
+        type="text" 
+        name="search" 
+        class="form-control" 
+        placeholder="Tìm kiếm thể loại" 
+        value="<%= data.search || '' %>" 
+        style="width: 300px; margin-right: 10px;"
+    >
+    <button class="btn btn-primary" type="submit">Tìm kiếm</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;" class="text-center align-middle">STT</th>
+            <th style="width: 200px;" class="text-center align-middle">Thể loại</th>
+            <th style="width: 100px;" class="text-center align-middle">Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.categories && data.categories.length > 0) { %>
+            <% for (let i = 0; i < data.categories.length; i++) { %>
+                <tr>
+                    <th scope="row" class="text-center align-middle"><%= (data.currentPage - 1) * data.perPage + i + 1 %></th>
+                    <td class="text-center align-middle"><%= data.categories[i].tentheloai %></td>
+                    <td class="text-center align-middle">
+                        <!-- Chỉnh sửa nhóm -->
+                        <a href="/edit-category/<%= data.categories[i].matheloai %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                        <!-- Xóa nhóm -->
+                        <form action="/delete-category/<%= data.categories[i].matheloai %>" method="post" class="del" onsubmit="return confirm('Bạn có chắc chắn muốn xóa nhóm này?');">
+                            <input type="hidden" value="<%= data.categories[i].matheloai %>" name="categoryId">
+                            <button type="submit" style="border: none; background: none; color: black; padding: 0; cursor: pointer;">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td colspan="3" class="text-center">Không có nhóm nào!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+    <% if (data.totalPages > 0) { %>
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <a href="/list-category?page=<%= i %>&search=<%= data.search || '' %>" 
+               class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+                <%= i %>
+            </a>
+        <% } %>
+    <% } %>
+</div>
+
+<style>
+    thead th {
+        border-bottom: 2px solid black !important; 
+        text-align: center;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+    }
+    .del {
+        display: inline; 
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr {
+        text-align: center;
+    }
+    .table th {
+        vertical-align: middle;
+    }
+</style>

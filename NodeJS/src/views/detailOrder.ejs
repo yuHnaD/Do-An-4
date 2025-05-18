@@ -1,0 +1,57 @@
+<h2>Chi tiết đơn hàng</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;" class="text-center align-middle">STT</th>
+            <th style="width: 100px;" class="text-center align-middle">Hình ảnh</th>
+            <th style="width: 200px;" class="text-center align-middle">Sản phẩm</th>
+            <th style="width: 100px;" class="text-center align-middle">Số lượng</th>
+            <th style="width: 150px;" class="text-center align-middle">Đơn giá</th>
+            <th style="width: 150px;" class="text-center align-middle">Tổng</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.detailCarts && data.detailCarts.length > 0) { %>
+            <% let totalPrice = 0; %>
+            <% for (let i = 0; i < data.detailCarts.length; i++) { %>
+                <tr>
+                    <th scope="row" class="text-center align-middle"><%= i + 1 %></th>
+                    <td class="text-center align-middle">
+                        <img src="/uploads/<%= data.detailCarts[i].hinhanh %>" alt="<%= data.detailCarts[i].ten %>" style="width: 80px; height: 80px; object-fit: cover;">
+                    </td>
+                    <td class="text-center align-middle"><%= data.detailCarts[i].tensach %></td>
+                    <td class="text-center align-middle"><%= data.detailCarts[i].soluong %></td>
+                    <td class="text-center align-middle"><%= data.detailCarts[i].gia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></td>
+                    <td class="text-center align-middle">
+                        <%= (data.detailCarts[i].gia * data.detailCarts[i].soluong).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %>
+                    </td>
+                </tr>
+                <% totalPrice += data.detailCarts[i].gia * data.detailCarts[i].soluong; %>
+            <% } %>
+            <tr>
+                <td colspan="5" class="text-right align-middle"><strong>Tổng cộng:</strong></td>
+                <td class="text-center align-middle"><strong><%= totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></strong></td>
+            </tr>
+        <% } else { %>
+            <tr>
+                <td colspan="6" class="text-center align-middle">Không có sản phẩm trong đơn hàng này!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<!-- Thêm các thông tin khác về đơn hàng-->
+<p><strong>Người đặt:</strong> <%= data.detailCarts[0].nguoidat %></p>
+<p><strong>Ngày đặt:</strong> <%= new Date(data.detailCarts[0].ngaydat).toLocaleString() %></p>
+<p><strong>Trạng thái:</strong> 
+    <% if (data.detailCarts[0].trangthai === '1') { %>Chờ xử lý
+    <% } else if (data.detailCarts[0].trangthai === '2') { %>Đã duyệt
+    <% } else { %>Đã hủy
+    <% } %>
+</p>
+
+<!-- Thêm thông tin địa chỉ nhận hàng-->
+<p><strong>Địa chỉ nhận hàng:</strong> <%= data.detailCarts[0].diachinhanhang %></p>
+
+<a href="/list-orders" class="btn btn-primary">Trở về danh sách đơn hàng</a>

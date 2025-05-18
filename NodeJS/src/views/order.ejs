@@ -1,0 +1,116 @@
+<h2>Danh Sách Đơn Hàng</h2>
+<!-- Lọc trạng thái đơn hàng -->
+<form method="GET" action="/list-orders">
+    <div class="form-group">
+        <select name="status" id="status" class="form-control" style="width: auto; max-width: 200px; max-height: 39px; margin-right: 10px;" onchange="this.form.submit()">
+            <option value="">Tất cả đơn hàng</option>
+            <option value="1" <%= data.status === '1' ? 'selected' : '' %>>Chờ xử lý</option>
+            <option value="2" <%= data.status === '2' ? 'selected' : '' %>>Đã duyệt</option>
+            <option value="3" <%= data.status === '3' ? 'selected' : '' %>>Đã hủy</option>
+        </select>
+    </div>
+</form>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;">STT</th>
+            <th style="width: 200px;">Người đặt</th>
+            <th style="width: 200px;">Ngày đặt</th>
+            <th style="width: 150px;">Tổng giá</th>
+            <th style="width: 150px;">Trạng thái</th>
+            <th style="width: 150px;">Thanh toán</th>
+            <th style="width: 100px;">Tác vụ</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.orders && data.orders.length > 0) { %>
+            <% for (let i = 0; i < data.orders.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= (data.currentPage - 1) * data.limit + i + 1 %></th>
+                    <td><%= data.orders[i].nguoidat %></td>
+                    <td><%= new Date(data.orders[i].ngaydat).toLocaleString() %></td>
+                    <td><%= data.orders[i].tonggia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) %></td>
+                    <td>
+                        <% if (data.orders[i].trangthai === '1') { %>
+                            Chờ xử lý
+                        <% } else if (data.orders[i].trangthai === '2') { %>
+                            Đã duyệt
+                        <% } else if (data.orders[i].trangthai === '3') { %>
+                            Đã hủy
+                        <% } %>
+                    </td>                    
+                    <td>
+                        <% if (data.orders[i].trangthai_thanhtoan === 'Đã thanh toán') { %>
+                            <span class="badge bg-success">Đã thanh toán</span>
+                        <% } else if (data.orders[i].trangthai_thanhtoan === 'Chưa thanh toán') { %>
+                            <span class="badge bg-warning">Thanh toán khi nhận hàng</span>
+                        <% } else if (data.orders[i].trangthai_thanhtoan === 'Thất bại') { %>
+                            <span class="badge bg-danger">Thanh toán thất bại</span>
+                        <% } else { %>
+                            <span class="badge bg-secondary">Không xác định</span>
+                        <% } %>
+                    </td>
+                    <td>
+                        <!-- Xem chi tiết đơn hàng -->
+                        <a href="/order-detail/<%= data.orders[i].madonhang %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    
+                        <!-- Sử dụng d-flex với flex-direction: column để các nút "Duyệt" và "Hủy" nằm dọc và căn giữa -->
+                        <div class="d-flex flex-column align-items-center justify-content-center mt-2">
+                            <% if (data.orders[i].trangthai === '1') { %>
+                                <!-- Chỉ hiển thị nút duyệt và hủy nếu trạng thái là "Chờ xử lý" -->
+                                <form action="/approve-order" method="post" style="display:inline;">
+                                    <input type="hidden" name="madh" value="<%= data.orders[i].madonhang %>">
+                                    <button type="submit" class="btn btn-success btn-sm mb-2">Duyệt</button>
+                                </form>
+                    
+                                <form action="/cancel-order" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn hủy đơn này?');">
+                                    <input type="hidden" name="madh" value="<%= data.orders[i].madonhang %>">
+                                    <button type="submit" class="btn btn-danger btn-sm">Hủy</button>
+                                </form>
+                            <% } else if (data.orders[i].trangthai === '2') { %>
+                                <span class="badge bg-success">Đã duyệt</span>
+                            <% } else if (data.orders[i].trangthai === '3') { %>
+                                <span class="badge bg-danger">Đã hủy</span>
+                            <% } %>
+                        </div>
+                    </td>                                  
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td colspan="7" class="text-center">Không có đơn hàng nào!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+    <% if (data.totalPages > 0) { %>
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <a href="/list-orders?page=<%= i %>&status=<%= data.status %>"
+               class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+                <%= i %>
+            </a>
+        <% } %>
+    <% } %>
+</div>
+<style>
+    thead th {
+        border-bottom: 2px solid black !important;
+        text-align: center;
+        padding: 10px;
+        background-color: #f8f9fa;
+    }
+    .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .table th {
+        vertical-align: middle;
+        text-align: center;
+    }
+</style>

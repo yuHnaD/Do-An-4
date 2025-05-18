@@ -1,0 +1,129 @@
+<!-- insertNewUser.ejs -->
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Thêm người dùng</h2>
+    <form action="/insert-new-user" method="POST">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="username" class="form-label">Tài khoản</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="fullname" class="form-label">Họ tên</label>
+                <input type="text" id="fullname" name="fullname" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="address" class="form-label">Địa chỉ</label>
+                <input type="text" id="address" name="address" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="sex" class="form-label">Giới tính</label>
+                <select id="sex" name="sex" class="form-control" required>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                    <option value="Khác">Khác</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="sodienthoai" class="form-label">Số điện thoại</label>
+            <input type="tel" id="sodienthoai" name="sodienthoai" class="form-control" required>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Thêm</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>
+
+<!-- <div class="container mt-5">
+    <h1>Thêm người dùng</h1>
+    <form action="/insert-new-user" method="POST">
+        <table class="table">
+            <tbody class="table-group-divider">
+                <tr>
+                    <th scope="col">Tài khoản</th>
+                    <td>
+                        <input type="text" name="username" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Mật khẩu</th>
+                    <td>
+                        <input type="text" name="password" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Họ tên</th>
+                    <td>
+                        <input type="text" name="fullname" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Địa chỉ</th>
+                    <td>
+                        <input type="text" name="address" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Giới tính</th>
+                    <td>
+                        <select name="sex" required>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                            <option value="Khác">Khác</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Email</th>
+                    <td>
+                        <input type="email" name="email" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Số điện thoại</th>
+                    <td>
+                        <input type="tel" name="sodienthoai" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-primary">Thêm</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</div> -->

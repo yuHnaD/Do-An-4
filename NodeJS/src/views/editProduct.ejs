@@ -1,0 +1,331 @@
+<!-- editProduct.ejs -->
+<div class="edit-container">
+    <div class="edit-header">
+        <h2 class="text-dark">Chỉnh Sửa Sản Phẩm</h2>
+    </div>
+    <form action="/update-product/<%= data.product.masach %>" method="POST" enctype="multipart/form-data">
+        <div class="edit-group">
+            <label for="tenSP">Tên sản phẩm:</label>
+            <input type="text" id="tenSP" name="ten" value="<%= data.product.tenSP %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="gia">Giá:</label>
+            <input type="number" id="gia" name="gia" value="<%= data.product.giaGoc ? data.product.giaGoc : '' %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="tacgia">Tác giả: </label>
+            <input type="text" id="tacgia" name="tacgia" value="<%= data.product.tacgia %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="idnhom">Thể loại:</label>
+            <select id="idnhom" name="idnhom">
+                <% data.nhom.forEach(function(group) { %>
+                    <option value="<%= group.matheloai %>" 
+                        <%= (parseInt(data.product.matheloai) === parseInt(group.matheloai)) ? 'selected' : '' %> >
+                        <%= group.tenLoai %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>      
+        <div class="edit-group">
+            <label for="idnxb">Nhà xuất bản:</label>
+            <select id="idnxb" name="idnxb" required>
+                <% data.nxb.forEach(function(nxb) { %>
+                    <option value="<%= nxb.manhaxuatban %>" 
+                        <%= (parseInt(data.product.manhaxuatban) === parseInt(nxb.manhaxuatban)) ? 'selected' : '' %> >
+                        <%= nxb.tenNxb %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>  
+        <div class="edit-group">
+            <label for="hinhanh">Hình ảnh chính:</label>
+            <input class="text-dark" type="file" id="hinhanh" name="hinhanh">
+            <p class="text-dark">Ảnh chính hiện tại:</p>
+            <img style="width: 100px;" class="text-dark" src="/uploads/<%= data.product.hinhanh %>" alt="<%= data.product.tenSP %>" class="current-image">
+        </div>
+        <div class="edit-group">
+            <p class="text-dark">Ảnh phụ hiện tại:</p>
+            <ul class="secondary-images-list">
+                <% if (data.product.hinhanh_phu && data.product.hinhanh_phu.length > 0) { 
+                    let images = JSON.parse(data.product.hinhanh_phu);
+                    for (let img of images) { 
+                %> 
+                    <li>
+                        <img style="width: 100px;" src="/uploads/<%= img %>" alt="Secondary Image">
+                        <div class="checkbox-group">
+                            <input class="text-dark" type="checkbox" name="keep_images[]" value="<%= img %>" checked>
+                            <label>Giữ</label>
+                        </div>
+                    </li>
+                <% } 
+                } else { 
+                %> 
+                    <p class="text-dark">Không có hình ảnh phụ.</p>
+                <% } %> 
+            </ul>
+        </div>
+        <div class="edit-group">
+            <label for="new_hinhanhPhu">Thêm ảnh phụ mới:</label>
+            <input class="text-dark" type="file" id="new_hinhanhPhu" name="new_hinhanhPhu" multiple>
+        </div>
+        <div class="edit-group">
+            <label for="mota">Mô tả:</label>
+            <textarea id="mota" name="mota" rows="4"><%= data.product.mota %></textarea>
+        </div>
+        <div class="btn-save">
+            <button type="submit">Lưu thay đổi</button>
+        </div>
+        <div class="btn-back">
+            <a href="/list-product">Quay lại danh sách sản phẩm</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .edit-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+    .edit-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .edit-group {
+        margin-bottom: 15px;
+    }
+    .edit-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: black; /* Đặt màu chữ của label là đen */
+    }
+    .edit-group ul {
+        list-style: none;
+        padding: 0;
+    }
+    .edit-group .secondary-images-list {
+        display: flex;
+        flex-wrap: wrap; /* Cho phép các ảnh xuống dòng nếu không đủ chỗ */
+        gap: 20px; /* Khoảng cách giữa các mục ảnh phụ */
+    }
+    .edit-group .secondary-images-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Khoảng cách giữa ảnh và nhóm checkbox */
+    }
+    .edit-group .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 5px; /* Khoảng cách nhỏ giữa checkbox và chữ "Giữ" */
+    }
+    .edit-group input, .edit-group select, .edit-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .edit-group .current-image {
+        max-width: 200px;
+        height: auto;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+    .btn-save {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .btn-save button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-save button:hover {
+        background-color: #218838;
+    }
+    .btn-back {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .btn-back a {
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back a:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- <div class="edit-container">
+    <div class="edit-header">
+        <h2 class="text-dark">Chỉnh Sửa Sản Phẩm</h2>
+    </div>
+    <form action="/update-product/<%= data.product.masach %>" method="POST" enctype="multipart/form-data">
+        <div class="edit-group">
+            <label for="tenSP">Tên sản phẩm:</label>
+            <input type="text" id="tenSP" name="ten" value="<%= data.product.tenSP %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="gia">Giá:</label>
+            <input type="number" id="gia" name="gia" value="<%= data.product.giaGoc ? data.product.giaGoc : '' %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="tacgia">Tác giả: </label>
+            <input type="text" id="tacgia" name="tacgia" value="<%= data.product.tacgia %>" required>
+        </div>
+        <div class="edit-group">
+            <label for="idnhom">Thể loại:</label>
+            <select id="idnhom" name="idnhom">
+                <% data.nhom.forEach(function(group) { %>
+                    <option value="<%= group.matheloai %>" 
+                        <%= (parseInt(data.product.matheloai) === parseInt(group.matheloai)) ? 'selected' : '' %> >
+                        <%= group.tenLoai %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>      
+        <div class="edit-group">
+            <label for="idnxb">Nhà xuất bản:</label>
+            <select id="idnxb" name="idnxb" required>
+                <% data.nxb.forEach(function(nxb) { %>
+                    <option value="<%= nxb.manhaxuatban %>" 
+                        <%= (parseInt(data.product.manhaxuatban) === parseInt(nxb.manhaxuatban)) ? 'selected' : '' %> >
+                        <%= nxb.tenNxb %>
+                    </option>
+                <% }); %>
+            </select>
+        </div>  
+        <div class="edit-group">
+            <label for="hinhanh">Hình ảnh chính:</label>
+            <input class="text-dark" type="file" id="hinhanh" name="hinhanh">
+            <p class="text-dark">Ảnh hiện tại:</p>
+            <img style="width: 100px;" class="text-dark" src="/uploads/<%= data.product.hinhanh %>" alt="<%= data.product.tenSP %>" class="current-image">
+        </div>
+        <div class="edit-group">
+            <label>Ảnh phụ hiện tại:</label>
+            <ul>
+                <% if (data.product.hinhanh_phu && data.product.hinhanh_phu.length > 0) { 
+                    let images = JSON.parse(data.product.hinhanh_phu);
+                    for (let img of images) { 
+                %> 
+                    <li>
+                        <img style="width: 100px;" src="/uploads/<%= img %>" alt="Secondary Image">
+                        <input class="text-dark" type="checkbox" name="keep_images[]" value="<%= img %>" checked>
+                        <label>Giữ</label>
+                    </li>
+                <% } 
+                } else { 
+                %> 
+                    <p class="text-dark">Không có hình ảnh phụ.</p>
+                <% } %> 
+            </ul>
+        </div>
+        <div class="edit-group">
+            <label for="new_hinhanhPhu">Thêm ảnh phụ mới:</label>
+            <input class="text-dark" type="file" id="new_hinhanhPhu" name="new_hinhanhPhu" multiple>
+        </div>
+        <div class="edit-group">
+            <label for="mota">Mô tả:</label>
+            <textarea id="mota" name="mota" rows="4"><%= data.product.mota %></textarea>
+        </div>
+        <div class="btn-save">
+            <button type="submit">Lưu thay đổi</button>
+        </div>
+        <div class="btn-back">
+            <a href="/list-product">Quay lại danh sách sản phẩm</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    .edit-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
+    .edit-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .edit-group {
+        margin-bottom: 15px;
+    }
+    .edit-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: black; /* Đặt màu chữ của label là đen */
+    }
+    .edit-group ul {
+        list-style: none;
+        padding: 0;
+    }
+    .edit-group ul li {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .edit-group input, .edit-group select, .edit-group textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .edit-group .current-image {
+        max-width: 200px;
+        height: auto;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
+    .btn-save {
+        text-align: center;
+        margin-top: 20px;
+    }
+    .btn-save button {
+        padding: 10px 20px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .btn-save button:hover {
+        background-color: #218838;
+    }
+    .btn-back {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .btn-back a {
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-back a:hover {
+        background-color: #0056b3;
+    }
+</style> -->

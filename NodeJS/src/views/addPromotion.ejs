@@ -1,0 +1,48 @@
+<!-- addPromotion.ejs -->
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Thêm phiếu giảm giá</h2>
+    <form action="/add-promotion" method="POST">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="promotionName" class="form-label">Tên khuyến mãi:</label>
+                <input type="text" id="promotionName" name="promotionName" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="discountPercentage" class="form-label">Phần trăm giảm giá (%):</label>
+                <input type="number" id="discountPercentage" name="discountPercentage" class="form-control" required min="1" max="100">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="startDate" class="form-label">Ngày bắt đầu:</label>
+                <input type="datetime-local" id="startDate" name="startDate" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="endDate" class="form-label">Ngày kết thúc:</label>
+                <input type="datetime-local" id="endDate" name="endDate" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary mt-3">Tạo khuyến mãi</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>

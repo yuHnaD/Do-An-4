@@ -1,0 +1,46 @@
+<!-- addStore.ejs -->
+<div class="container bg-light text-dark p-4 rounded shadow">
+    <h2 class="text-center mb-4">Thêm cửa hàng mới</h2>
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger mb-3"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/add-store" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="tencuahang" class="form-label">Tên cửa hàng</label>
+                <input type="text" class="form-control" id="tencuahang" name="tencuahang" required>
+            </div>
+            <div class="col-md-6">
+                <label for="diachi" class="form-label">Địa chỉ</label>
+                <input type="text" class="form-control" id="diachi" name="diachi" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="hinhanh" class="form-label">Hình ảnh cửa hàng</label>
+            <input type="file" class="form-control" id="hinhanh" name="hinhanh" accept="image/*">
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Thêm cửa hàng</button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin-top: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+    }
+</style>

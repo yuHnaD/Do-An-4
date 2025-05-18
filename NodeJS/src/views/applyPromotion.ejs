@@ -1,0 +1,133 @@
+<h1>Áp dụng phiếu giảm giá</h1>
+
+<% if (data.message) { %>
+  <div class="alert <%= data.messageType === 'success' ? 'alert-success' : 'alert-danger' %> alert-dismissible fade show" role="alert">
+    <%= data.message %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<form action="/apply-promotion" method="POST">
+  <label for="productId">Chọn sản phẩm:</label>
+  <select name="productId">
+    <option value="all">Tất cả sản phẩm</option>
+    <% data.products.forEach(product => { %>
+      <option value="<%= product.masach %>"><%= product.tensach %></option>
+    <% }); %>
+  </select>
+
+  <label for="promotionId">Chọn phiếu giảm giá:</label>
+  <select name="promotionId" required>
+    <% data.promotions.forEach(promotion => { %>
+      <option value="<%= promotion.makhuyenmai %>">
+        <%= promotion.tenkhuyenmai %> (Giảm <%= promotion.phantramgiamgia %>%)
+      </option>
+    <% }); %>
+  </select>
+
+  <button type="submit">Áp dụng</button>
+</form>
+
+<!-- Form tìm kiếm -->
+<form method="GET" action="/apply-promotion" class="mb-3">
+  <div class="form-group row">
+    <div class="col-md-4">
+      <input 
+        type="text" 
+        class="form-control" 
+        name="search" 
+        placeholder="Tìm kiếm sản phẩm..." 
+        value="<%= data.search || '' %>"
+      />
+    </div>
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+  </div>
+</form>
+
+<!-- Table danh sách sản phẩm -->
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width: 50px;">STT</th>
+      <th style="width: 50px;">Mã sách</th>
+      <th style="width: 50px;">Hình ảnh</th>
+      <th style="width: 200px;">Tên sản phẩm</th>
+      <th style="width: 150px;">Khuyến mãi đã áp dụng</th>
+      <th style="width: 150px;">Tác vụ</th> <!-- Thêm cột hành động -->
+    </tr>
+  </thead>
+  <tbody>
+    <% if (data.products.length > 0) { %>
+      <% data.products.forEach((product, index) => { %>
+        <tr>
+          <th scope="row"><%= (data.currentPage - 1) * data.limit + index + 1 %></th>
+          <td><%= product.masach %></td>
+          <td>
+            <img src="/uploads/<%= product.hinhanh %>" width="50">
+          </td>  
+          <td><%= product.tensach %></td>
+          <td>
+            <% if (product.makhuyenmai) { %>
+              <%= product.tenkhuyenmai %> (Giảm <%= product.phantramgiamgia %>%)
+            <% } else { %>
+              Không có khuyến mãi
+            <% } %>
+          </td>
+          <td>
+            <% if (product.makhuyenmai) { %>
+              <!-- Form xóa khuyến mãi -->
+              <form action="/remove-promotion" method="POST" style="display: inline;">
+                <input type="hidden" name="productId" value="<%= product.masach %>">
+                <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Bạn có chắc muốn xóa khuyến mãi cho sản phẩm này?');">
+                  Xóa khuyến mãi
+                </button>
+              </form>
+            <% } else { %>
+              Không có khuyến mãi để xóa
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    <% } else { %>
+      <tr>
+        <td colspan="4" class="text-center">Không tìm thấy sản phẩm!</td>
+      </tr>
+    <% } %>
+  </tbody>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+  <% for (let i = 1; i <= data.totalPages; i++) { %>
+    <a href="/apply-promotion?page=<%= i %>&search=<%= data.search %>" 
+       class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+      <%= i %>
+    </a>
+  <% } %>
+</div>
+<style>
+  thead th {
+      border-bottom: 2px solid black !important; 
+      text-align: center;
+      padding: 10px; 
+      background-color: #f8f9fa; 
+  }
+  .del {
+      display: inline; 
+  }
+  td img {
+      width: 50px;
+      height: 50px;
+  }
+  .table td {
+      vertical-align: middle;
+  }
+  .table tr {
+      text-align: center;
+  }
+  .table th {
+      vertical-align: middle;
+  }
+</style>

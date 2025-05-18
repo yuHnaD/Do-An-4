@@ -1,0 +1,56 @@
+<div class="container mt-5">
+    <h2>Danh sách cửa hàng</h2>
+    <% if (typeof error !== 'undefined') { %>
+        <div class="alert alert-danger text-center"><%= error %></div>
+    <% } %>
+    <div class="d-flex mb-3">
+        <a href="/add-store" class="btn btn-success">
+            <i class="fas fa-plus"></i> Thêm cửa hàng mới
+        </a>
+    </div>
+    <% if (data.stores && data.stores.length > 0) { %>
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th class="text-center">STT</th>
+                    <th class="text-center">Tên cửa hàng</th>
+                    <th class="text-center" width="350px">Địa chỉ</th>
+                    <th class="text-center">Tọa độ</th>
+                    <th class="text-center">Hình ảnh</th>
+                    <th class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% data.stores.forEach((store, index) => { %>
+                    <tr>
+                        <td class="text-center align-middle"><%= index + 1 %></td>
+                        <td class="text-center align-middle"><%= store.tencuahang %></td>
+                        <td class="text-center align-middle"><%= store.diachi %></td>
+                        <td class="text-center align-middle">(<%= store.lat %>, <%= store.lng %>)</td>
+                        <td class="text-center align-middle">
+                            <% if (store.hinhanh) { %>
+                                <img src="/uploads/<%= store.hinhanh %>" alt="<%= store.tencuahang %>" class="img-fluid" style="max-width: 100px; max-height: 100px; border-radius: 8px;">
+                            <% } else { %>
+                                <span>Không có hình ảnh</span>
+                            <% } %>
+                        </td>
+                        <td class="text-center align-middle">
+                            <div class="d-flex justify-content-center gap-2">
+                                <a href="/edit-store/<%= store.macuahang %>" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Sửa
+                                </a>
+                                <form action="/delete-store/<%= store.macuahang %>" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa cửa hàng này?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash-alt"></i> Xóa
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p class="text-center text-muted">Chưa có cửa hàng nào được thêm.</p>
+    <% } %>
+</div>

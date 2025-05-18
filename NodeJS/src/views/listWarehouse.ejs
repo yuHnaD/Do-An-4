@@ -1,0 +1,79 @@
+<h3>Danh sách phiếu nhập kho</h3>
+<div class="container" style="max-width: 100%; padding-left: 0;">
+    <form action="/list-warehouse" method="get" class="mb-3 d-flex">
+        <!-- Input tìm kiếm theo ngày -->
+        <input type="date" name="searchDate" class="form-control" value="<%= data.searchDate || '' %>" style="width: auto; max-width: 200px; max-height: 39px; margin-right: 10px;" onchange="this.form.submit()">
+        <!-- <button class="btn btn-primary" type="submit" style="width: auto; max-width: 150px; max-height: 39px; margin-right: 10px;">Tìm kiếm</button> -->
+    </form>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th style="width: 50px;">STT</th>
+            <th style="width: 200px;">Mã phiếu</th>
+            <th style="width: 200px;">Ngày nhập kho</th>
+            <th style="width: 150px;">Ghi chú</th>
+            <th style="width: 100px;">Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% if (data.importWarehouses && data.importWarehouses.length > 0) { %>
+            <% for (let i = 0; i < data.importWarehouses.length; i++) { %>
+                <tr>
+                    <th scope="row"><%= (data.currentPage - 1) * data.limit + i + 1 %></th>
+                    <td><%= data.importWarehouses[i].manhapkho %></td>
+                    <td><%= new Date(data.importWarehouses[i].ngaynhapkho).toLocaleString() %></td>
+                    <td><%= data.importWarehouses[i].ghichu %></td>
+                    <td>
+                        <a href="/detail-warehouse/<%= data.importWarehouses[i].manhapkho %>">
+                            <span class="setting" style="color: blue; padding-right: 10px;">
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+            <% } %>
+        <% } else { %>
+            <tr>
+                <td colspan="5" class="text-center">Không có phiếu nhập kho nào!</td>
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<!-- Phân trang -->
+<div class="pagination justify-content-center">
+    <% if (data.totalPages > 0) { %>
+        <% for (let i = 1; i <= data.totalPages; i++) { %>
+            <a href="/list-warehouse?page=<%= i %>&searchDate=<%= data.searchDate || '' %>"
+               class="btn <%= i === data.currentPage ? 'btn-primary' : 'btn-light' %> mx-1">
+                <%= i %>
+            </a>
+        <% } %>
+    <% } %>
+</div>
+<style>
+    thead th {
+        border-bottom: 2px solid black !important; 
+        text-align: center;
+        padding: 10px; 
+        background-color: #f8f9fa; 
+    }
+    .del {
+        display: inline; 
+    }
+    td img {
+        width: 50px;
+        height: 50px;
+    }
+    .table td {
+        vertical-align: middle;
+    }
+    .table tr {
+        text-align: center;
+    }
+    .table th {
+        vertical-align: middle;
+    }
+</style>
