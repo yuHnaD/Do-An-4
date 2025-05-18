@@ -844,16 +844,16 @@ const updateStock = async (masach, soluong) => {
                   prod.tensach || '',
                   { caseSensitive: false }
               );
-              score += tensachScore * 0;
+              score += tensachScore * 0.05;
   
               // 2. Tương đồng dựa trên matheloai (30%)
               if (prod.matheloai === product.matheloai) {
-                  score += 0;
+                  score += 0.025;
               }
   
               // 3. Tương đồng dựa trên tacgia (20%)
               if (prod.tacgia === product.tacgia) {
-                  score += 0;
+                  score += 0.025;
               }
   
               // 4. Tương đồng dựa trên mô tả (10%)
@@ -862,7 +862,7 @@ const updateStock = async (masach, soluong) => {
                   const validIndex = validProducts.indexOf(prod);
                   tfidfScore = calculateCosineSimilarity(tfidf, 0, validIndex + 1);
               }
-              score += tfidfScore * 1;
+              score += tfidfScore * 0.9;
   
               // 5. Ưu tiên sản phẩm trong lịch sử xem (thêm 0.2 nếu có)
             //   if (viewedIds.includes(prod.masach)) {
